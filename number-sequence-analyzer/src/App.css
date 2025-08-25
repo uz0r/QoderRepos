@@ -1,0 +1,536 @@
+/* Number Sequence Analyzer - Game Design Theme */
+:root {
+  /* Game Design Color Palette */
+  --primary-bg: #0f1419;
+  --secondary-bg: #1a2332;
+  --card-bg: #253142;
+  --accent-blue: #64b5f6;
+  --accent-green: #4caf50;
+  --accent-orange: #ff9800;
+  --accent-red: #f44336;
+  --text-primary: #ffffff;
+  --text-secondary: #b0bec5;
+  --text-muted: #607d8b;
+  --border-color: #37474f;
+  --hover-bg: #2d3748;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-success: linear-gradient(135deg, #4caf50 0%, #81c784 100%);
+  --gradient-warning: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%);
+  --gradient-error: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--primary-bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Styling */
+.app-header {
+  background: var(--gradient-primary);
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.description {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Main Content */
+.app-main {
+  flex: 1;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Section Styling */
+.config-section,
+.input-section,
+.error-section,
+.results-section {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+}
+
+.config-section h2,
+.input-section h2,
+.results-section h2 {
+  color: var(--accent-blue);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.config-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* Input Components */
+.api-key-input,
+.model-selector,
+.sequence-textarea {
+  margin-bottom: 1.5rem;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.input-field,
+.select-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--secondary-bg);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus,
+.select-field:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+}
+
+.input-field.valid {
+  border-color: var(--accent-green);
+}
+
+.input-field.invalid {
+  border-color: var(--accent-red);
+}
+
+.textarea-field {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--secondary-bg);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: 'Courier New', monospace;
+  resize: vertical;
+  min-height: 300px;
+  transition: all 0.3s ease;
+}
+
+.textarea-field:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+}
+
+.textarea-field::placeholder {
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Input Help and Stats */
+.input-help {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.input-help a {
+  color: var(--accent-blue);
+  text-decoration: none;
+}
+
+.input-help a:hover {
+  text-decoration: underline;
+}
+
+.input-help ul {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+}
+
+.input-help li {
+  margin-bottom: 0.25rem;
+}
+
+.input-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.stat {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: var(--secondary-bg);
+}
+
+.stat.success {
+  color: var(--accent-green);
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.validation-error {
+  color: var(--accent-red);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.model-note {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Submit Button */
+.submit-section {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.submit-button {
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 250px;
+  justify-content: center;
+}
+
+.submit-button:hover:not(.disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.submit-button.disabled {
+  background: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.submit-button.loading {
+  background: var(--gradient-warning);
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.button-help {
+  margin-top: 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.loading-tips {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--secondary-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  text-align: left;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loading-tips ul {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+}
+
+.loading-tips li {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+}
+
+/* Error Section */
+.error-section {
+  background: rgba(244, 67, 54, 0.1);
+  border-color: var(--accent-red);
+}
+
+.error-message {
+  color: var(--accent-red);
+  font-weight: 500;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Formatted Output */
+.formatted-output {
+  background: var(--secondary-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.output-content {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.output-header-1 {
+  color: var(--accent-blue);
+  font-size: 1.5rem;
+  margin: 1.5rem 0 1rem 0;
+  border-bottom: 2px solid var(--accent-blue);
+  padding-bottom: 0.5rem;
+}
+
+.output-header-2 {
+  color: var(--accent-green);
+  font-size: 1.3rem;
+  margin: 1.3rem 0 0.8rem 0;
+}
+
+.output-header-3 {
+  color: var(--accent-orange);
+  font-size: 1.1rem;
+  margin: 1rem 0 0.6rem 0;
+}
+
+.output-paragraph {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.table-row {
+  display: flex;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table-row:first-child {
+  background: var(--hover-bg);
+  font-weight: 600;
+  color: var(--accent-blue);
+}
+
+.table-cell {
+  flex: 1;
+  padding: 0 1rem;
+  text-align: left;
+}
+
+.bullet-point,
+.numbered-point {
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  color: var(--text-secondary);
+}
+
+.inline-code {
+  background: var(--primary-bg);
+  color: var(--accent-orange);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+/* Output Actions */
+.output-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  background: var(--gradient-success);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.output-footer {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+}
+
+.footer-note {
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 1.5rem 1rem;
+  }
+  
+  .app-header h1 {
+    font-size: 2rem;
+  }
+  
+  .config-inputs {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .app-main {
+    padding: 1rem;
+  }
+  
+  .config-section,
+  .input-section,
+  .error-section,
+  .results-section {
+    padding: 1.5rem;
+  }
+  
+  .submit-button {
+    min-width: 200px;
+    padding: 0.875rem 1.5rem;
+  }
+  
+  .loading-tips {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .output-actions {
+    justify-content: center;
+  }
+  
+  .table-row {
+    flex-direction: column;
+  }
+  
+  .table-cell {
+    padding: 0.25rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .description {
+    font-size: 0.9rem;
+  }
+  
+  .submit-button {
+    min-width: 100%;
+  }
+  
+  .input-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .submit-button,
+  .action-button,
+  .input-field,
+  .select-field,
+  .textarea-field {
+    transition: none;
+  }
+  
+  .spinner {
+    animation: none;
+  }
+}
+
+/* Focus indicators for keyboard navigation */
+.submit-button:focus,
+.action-button:focus {
+  outline: 3px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border-color: #ffffff;
+    --text-secondary: #ffffff;
+  }
+}
