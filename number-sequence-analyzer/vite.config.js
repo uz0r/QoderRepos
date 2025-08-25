@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/QoderRepos/number-sequence-analyzer/',
+  base: '/QoderRepos/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

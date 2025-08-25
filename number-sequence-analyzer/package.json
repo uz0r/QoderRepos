@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://uz0r.github.io/QoderRepos/number-sequence-analyzer/",
+  "homepage": "https://uz0r.github.io/QoderRepos/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
